@@ -1,0 +1,10 @@
+{
+  "name": "library-maintenance-system",
+  "version": "1.0.0",
+  "description": "A highly-polished digital Library Maintenance System for managing books, users, and borrowings.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx http-server -p 3000",
+    "start": "npx http-server -p 3000"
+  }
+}

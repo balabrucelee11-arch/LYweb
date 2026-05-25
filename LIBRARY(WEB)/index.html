@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GTN Library - Library Maintenance System</title>
+  <!-- Google Fonts: Outfit and Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons via CDN for modern minimal iconography -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="dark-theme theme-indigo font-md">
+  <!-- App Container -->
+  <div id="app-container" class="login-mode">
+
+    <!-- LOGIN PAGE -->
+    <div id="login-screen" class="screen-view active">
+      <div class="login-theme-toggle-wrapper" style="position: absolute; top: 24px; right: 24px; z-index: 10;">
+        <button class="theme-switch-btn" onclick="toggleTheme(); playAudioTone('click')" title="Toggle Theme">
+          <i-lucide name="sun" class="sun-track-icon" style="position: absolute; left: 8px; width: 14px; height: 14px; color: var(--text-muted); opacity: 0.65; z-index: 1; pointer-events: none;"></i-lucide>
+          <i-lucide name="moon" class="moon-track-icon" style="position: absolute; right: 8px; width: 14px; height: 14px; color: var(--text-muted); opacity: 0.65; z-index: 1; pointer-events: none;"></i-lucide>
+          <div class="theme-switch-thumb" style="z-index: 2;">
+            <i-lucide name="sun" class="sun-icon-switch" style="width: 14px; height: 14px;"></i-lucide>
+            <i-lucide name="moon" class="moon-icon-switch" style="width: 14px; height: 14px;"></i-lucide>
+          </div>
+        </button>
+      </div>
+
+      <div class="login-card glass-panel">
+        <div class="login-header">
+          <div class="logo-icon-large">
+            <svg viewBox="0 0 350 90" xmlns="http://www.w3.org/2000/svg" class="gtn-logo-college">
+              <!-- Crest -->
+              <g transform="translate(5, 5)">
+                <path d="M 15,5 L 35,5 L 35,35 L 15,35 Z" fill="#fef08a" />
+                <path d="M 35,5 L 55,5 L 55,35 L 35,35 Z" fill="#86efac" />
+                <path d="M 15,35 L 35,35 C 35,55 25,65 15,65 Z" fill="#93c5fd" />
+                <path d="M 35,35 L 55,35 C 55,65 45,65 35,65 Z" fill="#fef08a" />
+                <path d="M 15,2 C 20,2 25,0 35,0 C 45,0 50,2 55,2 L 58,10 C 58,25 58,45 35,70 C 12,45 12,25 12,10 Z" fill="none" stroke="#15803d" stroke-width="2.5" />
+                <line x1="35" y1="0" x2="35" y2="70" stroke="#15803d" stroke-width="2.5" />
+                <line x1="12" y1="35" x2="58" y2="35" stroke="#15803d" stroke-width="2.5" />
+                <!-- open book -->
+                <path d="M 20,16 C 22,14 28,14 30,16 M 20,21 C 22,19 28,19 30,21 M 20,26 C 22,24 28,24 30,26 M 25,13 L 25,28" fill="none" stroke="#1e293b" stroke-width="1.5" />
+                <!-- pillar -->
+                <path d="M 42,30 L 48,30 L 47,15 L 43,15 Z M 40,15 L 50,15 L 45,10 Z" fill="#1e293b" />
+                <!-- ship -->
+                <path d="M 20,50 L 30,50 L 28,55 L 22,55 Z M 25,48 L 25,43 L 28,46 Z" fill="#1e293b" />
+                <!-- crop -->
+                <path d="M 42,55 C 44,52 48,46 45,42 M 46,45 C 47,48 44,51 43,53 M 40,58 L 48,48" fill="none" stroke="#1e293b" stroke-width="1.5" />
+                <!-- banner -->
+                <path d="M 5,68 C 15,64 25,66 35,66 C 45,66 55,64 65,68 L 60,78 C 50,74 40,76 35,76 C 30,76 20,74 10,78 Z" fill="#eab308" stroke="#ca8a04" stroke-width="1" />
+                <text x="35" y="74" font-size="4" font-weight="bold" fill="#000000" text-anchor="middle" letter-spacing="0.2">IN GOD WE TRUST</text>
+              </g>
+              <!-- Text -->
+              <g transform="translate(75, 5)">
+                <text x="0" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="34" fill="#0fa25e" letter-spacing="1">G.T.N.</text>
+                <rect x="0" y="42" width="180" height="24" rx="2" fill="#0c4a6e" />
+                <text x="8" y="59" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="14" fill="#ffffff" letter-spacing="2">ARTS COLLEGE</text>
+                <text x="0" y="81" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="13" fill="#ef4444" letter-spacing="0.5">(Autonomous)</text>
+              </g>
+            </svg>
+          </div>
+          <h2 data-translate="login_title">Library Portal</h2>
+          <p data-translate="login_subtitle">Access the digital library management system</p>
+        </div>
+
+        <form id="login-form" onsubmit="event.preventDefault(); handleLogin();">
+          <!-- Role Selection Toggle -->
+          <div class="role-selector-container">
+            <span class="role-label" data-translate="role_label">Select Role:</span>
+            <div class="role-toggle-group">
+              <input type="radio" id="role-admin" name="login-role" value="admin" checked onclick="playAudioTone('click')">
+              <label for="role-admin" data-translate="role_admin">Administrator</label>
+              
+              <input type="radio" id="role-student" name="login-role" value="student" onclick="playAudioTone('click')">
+              <label for="role-student" data-translate="role_student">Student</label>
+            </div>
+          </div>
+
+          <!-- Input Fields -->
+          <div class="form-group">
+            <label for="login-username" data-translate="username_label">Username / Student ID</label>
+            <div class="input-icon-wrapper">
+              <i-lucide name="user" class="input-icon"></i-lucide>
+              <input type="text" id="login-username" placeholder="e.g. admin or bala" required autocomplete="username">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="login-password" data-translate="password_label">Password</label>
+            <div class="input-icon-wrapper">
+              <i-lucide name="lock" class="input-icon"></i-lucide>
+              <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+              <button type="button" class="btn-icon password-toggle" onclick="togglePasswordVisibility('login-password', this); playAudioTone('click')">
+                <i-lucide name="eye-off" class="toggle-eye-icon"></i-lucide>
+              </button>
+            </div>
+          </div>
+
+          <!-- Credentials Tip -->
+          <div class="credentials-tip">
+            <i-lucide name="info" class="tip-icon"></i-lucide>
+            <div>
+              <strong data-translate="credentials_tip_title">Demo Credentials:</strong><br>
+              <span data-translate="admin_credential_tip">Admin: admin / admin123</span><br>
+              <span data-translate="student_credential_tip">Student: bala / 2006 or ST002 / 2006</span>
+            </div>
+          </div>
+
+          <!-- Extra Options -->
+          <div class="login-options">
+            <label class="checkbox-container">
+              <input type="checkbox" id="login-remember">
+              <span class="checkmark"></span>
+              <span data-translate="remember_me">Remember me</span>
+            </label>
+            <a href="#" class="forgot-link" onclick="handleForgotPassword(event); playAudioTone('click')" data-translate="forgot_password">Forgot password?</a>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary btn-block btn-gradient">
+            <span data-translate="login_btn">Sign In</span>
+            <i-lucide name="arrow-right"></i-lucide>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- MAIN DASHBOARD LAYOUT (Hidden by default) -->
+    <div id="main-portal" class="portal-layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar glass-panel">
+        <div class="sidebar-header">
+          <div class="logo-container-full">
+            <svg viewBox="0 0 350 90" xmlns="http://www.w3.org/2000/svg" class="gtn-logo-college">
+              <!-- Crest -->
+              <g transform="translate(5, 5)">
+                <path d="M 15,5 L 35,5 L 35,35 L 15,35 Z" fill="#fef08a" />
+                <path d="M 35,5 L 55,5 L 55,35 L 35,35 Z" fill="#86efac" />
+                <path d="M 15,35 L 35,35 C 35,55 25,65 15,65 Z" fill="#93c5fd" />
+                <path d="M 35,35 L 55,35 C 55,65 45,65 35,65 Z" fill="#fef08a" />
+                <path d="M 15,2 C 20,2 25,0 35,0 C 45,0 50,2 55,2 L 58,10 C 58,25 58,45 35,70 C 12,45 12,25 12,10 Z" fill="none" stroke="#15803d" stroke-width="2.5" />
+                <line x1="35" y1="0" x2="35" y2="70" stroke="#15803d" stroke-width="2.5" />
+                <line x1="12" y1="35" x2="58" y2="35" stroke="#15803d" stroke-width="2.5" />
+                <!-- open book -->
+                <path d="M 20,16 C 22,14 28,14 30,16 M 20,21 C 22,19 28,19 30,21 M 20,26 C 22,24 28,24 30,26 M 25,13 L 25,28" fill="none" stroke="#1e293b" stroke-width="1.5" />
+                <!-- pillar -->
+                <path d="M 42,30 L 48,30 L 47,15 L 43,15 Z M 40,15 L 50,15 L 45,10 Z" fill="#1e293b" />
+                <!-- ship -->
+                <path d="M 20,50 L 30,50 L 28,55 L 22,55 Z M 25,48 L 25,43 L 28,46 Z" fill="#1e293b" />
+                <!-- crop -->
+                <path d="M 42,55 C 44,52 48,46 45,42 M 46,45 C 47,48 44,51 43,53 M 40,58 L 48,48" fill="none" stroke="#1e293b" stroke-width="1.5" />
+                <!-- banner -->
+                <path d="M 5,68 C 15,64 25,66 35,66 C 45,66 55,64 65,68 L 60,78 C 50,74 40,76 35,76 C 30,76 20,74 10,78 Z" fill="#eab308" stroke="#ca8a04" stroke-width="1" />
+                <text x="35" y="74" font-size="4" font-weight="bold" fill="#000000" text-anchor="middle" letter-spacing="0.2">IN GOD WE TRUST</text>
+              </g>
+              <!-- Text -->
+              <g transform="translate(75, 5)">
+                <text x="0" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="34" fill="#0fa25e" letter-spacing="1">G.T.N.</text>
+                <rect x="0" y="42" width="180" height="24" rx="2" fill="#0c4a6e" />
+                <text x="8" y="59" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="14" fill="#ffffff" letter-spacing="2">ARTS COLLEGE</text>
+                <text x="0" y="81" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="13" fill="#ef4444" letter-spacing="0.5">(Autonomous)</text>
+              </g>
+            </svg>
+          </div>
+          <button class="btn-icon mobile-menu-close" onclick="toggleSidebar(false); playAudioTone('click')">
+            <i-lucide name="x"></i-lucide>
+          </button>
+        </div>
+
+        <!-- Logged In User profile widget -->
+        <div class="user-profile-badge">
+          <div class="avatar" id="user-avatar-initials">AD</div>
+          <div class="profile-info">
+            <span class="profile-name" id="portal-user-name">Administrator</span>
+            <span class="profile-role badge badge-admin" id="portal-user-role-badge">Admin</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section-title" data-translate="sidebar_menu_header">Menu</div>
+
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="#" class="nav-link active" data-view="dashboard-view" onclick="switchView('dashboard-view'); playAudioTone('click')">
+                <i-lucide name="layout-dashboard"></i-lucide>
+                <span data-translate="nav_dashboard">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link" data-view="books-view" onclick="switchView('books-view'); playAudioTone('click')">
+                <i-lucide name="book-open"></i-lucide>
+                <span data-translate="nav_books">Books Catalog</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link" data-view="borrow-view" onclick="switchView('borrow-view'); playAudioTone('click')">
+                <i-lucide name="arrow-left-right"></i-lucide>
+                <span data-translate="nav_borrow">Issue / Return</span>
+              </a>
+            </li>
+            <li class="admin-only">
+              <a href="#" class="nav-link" data-view="users-view" onclick="switchView('users-view'); playAudioTone('click')">
+                <i-lucide name="users"></i-lucide>
+                <span data-translate="nav_users">User Management</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link" data-view="settings-view" onclick="switchView('settings-view'); playAudioTone('click')">
+                <i-lucide name="settings"></i-lucide>
+                <span data-translate="nav_settings">Settings</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <!-- Quick toggles -->
+          <div class="footer-toggles">
+            <button class="theme-switch-btn" onclick="toggleTheme(); playAudioTone('click')" title="Toggle Theme">
+              <i-lucide name="sun" class="sun-track-icon" style="position: absolute; left: 8px; width: 14px; height: 14px; color: var(--text-muted); opacity: 0.65; z-index: 1; pointer-events: none;"></i-lucide>
+              <i-lucide name="moon" class="moon-track-icon" style="position: absolute; right: 8px; width: 14px; height: 14px; color: var(--text-muted); opacity: 0.65; z-index: 1; pointer-events: none;"></i-lucide>
+              <div class="theme-switch-thumb" style="z-index: 2;">
+                <i-lucide name="sun" class="sun-icon-switch" style="width: 14px; height: 14px;"></i-lucide>
+                <i-lucide name="moon" class="moon-icon-switch" style="width: 14px; height: 14px;"></i-lucide>
+              </div>
+            </button>
+            <div class="language-dropdown">
+              <button class="btn btn-secondary btn-sm" onclick="toggleLanguageSelector(); playAudioTone('click')" id="lang-btn">
+                <i-lucide name="languages" class="icon-sm"></i-lucide>
+                <span>EN</span>
+              </button>
+              <div class="dropdown-menu glass-panel" id="lang-menu">
+                <button onclick="setLanguage('en'); playAudioTone('click')">English</button>
+                <button onclick="setLanguage('ta'); playAudioTone('click')">தமிழ் (Tamil)</button>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn btn-danger btn-block btn-sm" onclick="showLogoutConfirmation(); playAudioTone('click')">
+            <i-lucide name="log-out"></i-lucide>
+            <span data-translate="logout_btn">Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT PANEL -->
+      <main class="content-panel">
+        <!-- HEADER -->
+        <header class="content-header glass-panel">
+          <div class="header-left">
+            <button class="btn-icon mobile-menu-toggle" onclick="toggleSidebar(true); playAudioTone('click')">
+              <i-lucide name="menu"></i-lucide>
+            </button>
+            <h1 id="screen-title" data-translate="dashboard_title">Dashboard</h1>
+          </div>
+          
+          <div class="header-right">
+            <!-- Time Widget -->
+            <div class="time-widget">
+              <i-lucide name="clock"></i-lucide>
+              <span id="current-time-display">25 May 2026 14:07</span>
+            </div>
+
+            <!-- Notifications Button -->
+            <div class="notifications-container">
+              <button class="btn-icon" onclick="toggleNotificationsPanel(); playAudioTone('click')" id="notifications-bell">
+                <i-lucide name="bell"></i-lucide>
+                <span class="notification-badge" id="notifications-count">2</span>
+              </button>
+              <div class="notifications-panel glass-panel" id="notifications-dropdown">
+                <div class="panel-header">
+                  <h3 data-translate="notifications_title">Notifications</h3>
+                  <button class="btn-text btn-sm" onclick="clearNotifications(); playAudioTone('click')" data-translate="clear_all">Clear All</button>
+                </div>
+                <div class="notifications-list" id="notifications-list-container">
+                  <!-- Seeded Notifications -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- PORTAL SCREENS -->
+        <div class="screen-content-wrapper">
+          
+          <!-- 1. DASHBOARD VIEW -->
+          <div id="dashboard-view" class="portal-screen active">
+            
+            <!-- ADMIN DASHBOARD PANEL -->
+            <div class="admin-only">
+              <div class="stats-grid">
+                <div class="stat-card glass-panel card-primary">
+                  <div class="stat-icon"><i-lucide name="book"></i-lucide></div>
+                  <div class="stat-details">
+                    <span class="stat-label" data-translate="stat_total_books">Total Books</span>
+                    <h3 class="stat-number" id="stat-total-books">25</h3>
+                  </div>
+                </div>
+                <div class="stat-card glass-panel card-success">
+                  <div class="stat-icon"><i-lucide name="check-circle"></i-lucide></div>
+                  <div class="stat-details">
+                    <span class="stat-label" data-translate="stat_available_books">Books Available</span>
+                    <h3 class="stat-number" id="stat-avail-books">15</h3>
+                  </div>
+                </div>
+                <div class="stat-card glass-panel card-warning">
+                  <div class="stat-icon"><i-lucide name="bookmark"></i-lucide></div>
+                  <div class="stat-details">
+                    <span class="stat-label" data-translate="stat_borrowed_books">Books Borrowed</span>
+                    <h3 class="stat-number" id="stat-borrowed-books">10</h3>
+                  </div>
+                </div>
+                <div class="stat-card glass-panel card-info">
+                  <div class="stat-icon"><i-lucide name="undo-2"></i-lucide></div>
+                  <div class="stat-details">
+                    <span class="stat-label" data-translate="stat_returned_books">Books Returned</span>
+                    <h3 class="stat-number" id="stat-returned-books">5</h3>
+                  </div>
+                </div>
+                <div class="stat-card glass-panel card-danger">
+                  <div class="stat-icon"><i-lucide name="alert-circle"></i-lucide></div>
+                  <div class="stat-details">
+                    <span class="stat-label" data-translate="stat_pending_submissions">Pending Submissions</span>
+                    <h3 class="stat-number" id="stat-pending-users">5</h3>
+                  </div>
+                </div>
+                <div class="stat-card glass-panel card-purple">
+                  <div class="stat-icon"><i-lucide name="users"></i-lucide></div>
+                  <div class="stat-details">
+                    <span class="stat-label" data-translate="stat_total_students">Total Students</span>
+                    <h3 class="stat-number" id="stat-total-students">10</h3>
+                  </div>
+                </div>
+                <div class="stat-card glass-panel card-orange">
+                  <div class="stat-icon"><i-lucide name="activity"></i-lucide></div>
+                  <div class="stat-details">
+                    <span class="stat-label" data-translate="stat_daily_activity">Daily Activity</span>
+                    <h3 class="stat-number" id="stat-daily-activity">2</h3>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Two Column Dashboard Layout -->
+              <div class="dashboard-columns">
+                <div class="column-left">
+                  <div class="dashboard-panel glass-panel">
+                    <div class="panel-title-container">
+                      <i-lucide name="alert-triangle" class="icon-warning"></i-lucide>
+                      <h2 data-translate="pending_returns_panel">Pending Submissions Track</h2>
+                    </div>
+                    <div class="table-container">
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th data-translate="th_student_id">Student ID</th>
+                            <th data-translate="th_student_name">Student Name</th>
+                            <th data-translate="th_book_taken">Book Borrowed</th>
+                            <th data-translate="th_due_date">Due Date</th>
+                            <th data-translate="th_status">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody id="dashboard-pending-table-body">
+                          <!-- Dynamically populated pending records -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="column-right">
+                  <div class="dashboard-panel glass-panel">
+                    <div class="panel-title-container">
+                      <i-lucide name="history"></i-lucide>
+                      <h2 data-translate="recent_activity_panel">Recent Library Activities</h2>
+                    </div>
+                    <div class="activity-timeline" id="dashboard-activity-timeline">
+                      <!-- Populated dynamically by activity logs -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STUDENT DASHBOARD PANEL -->
+            <div class="student-only">
+              <div class="welcome-box-wrapper glass-panel">
+                <div class="welcome-left-details">
+                  <h2 id="student-welcome-title">Welcome back, Student!</h2>
+                  <p id="student-welcome-subtitle">Search for books, view checkouts, and request recommendations.</p>
+                  
+                  <div class="welcome-quick-search-box">
+                    <div class="input-icon-wrapper">
+                      <i-lucide name="search" class="input-icon"></i-lucide>
+                      <input type="text" id="welcome-search-input" placeholder="Quick search title or book ID..." onkeydown="handleWelcomeSearch(event)">
+                    </div>
+                  </div>
+                </div>
+                <div class="welcome-right-metric">
+                  <div class="metric-circle-box">
+                    <span class="number" id="student-holding-count">0</span>
+                    <span class="label" data-translate="stud_holding_label">Books Held</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Secondary student dashboards split widgets -->
+              <div class="dashboard-columns">
+                <div class="column-left">
+                  <!-- Recommended books list -->
+                  <div class="dashboard-panel glass-panel">
+                    <div class="panel-title-container">
+                      <i-lucide name="sparkles" class="icon-warning"></i-lucide>
+                      <h2 data-translate="recommended_panel_title">Recommended Books For You</h2>
+                    </div>
+                    <div class="recommended-books-carousel" id="recommended-books-list">
+                      <!-- Populated dynamically -->
+                    </div>
+                  </div>
+
+                  <!-- Recently Added books list -->
+                  <div class="dashboard-panel glass-panel">
+                    <div class="panel-title-container">
+                      <i-lucide name="calendar-plus" class="icon-success"></i-lucide>
+                      <h2 data-translate="recent_added_panel_title">Recently Added Additions</h2>
+                    </div>
+                    <div class="recently-added-container" id="recently-added-list">
+                      <!-- Populated dynamically -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="column-right">
+                  <!-- Return deadline quick alert panel -->
+                  <div class="dashboard-panel glass-panel alert-deadline-panel" id="student-deadline-alert-panel">
+                    <div class="panel-title-container">
+                      <i-lucide name="calendar-clock" class="icon-danger"></i-lucide>
+                      <h2 data-translate="alerts_header_title">Borrow Status & Return Date Reminders</h2>
+                    </div>
+                    <div class="deadline-alerts-list" id="student-deadline-alerts-list">
+                      <!-- Overdue or active loan items listing -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 2. BOOKS CATALOG VIEW -->
+          <div id="books-view" class="portal-screen">
+            <div class="action-bar-container">
+              <!-- Search and Filters -->
+              <div class="search-filters-group">
+                <div class="input-icon-wrapper search-box">
+                  <i-lucide name="search" class="input-icon"></i-lucide>
+                  <input type="text" id="book-search-input" data-translate-placeholder="search_placeholder" placeholder="Search by Book ID, Name, Author..." oninput="filterBooks()">
+                </div>
+                
+                <select id="book-category-filter" onchange="filterBooks(); playAudioTone('click')">
+                  <option value="all" data-translate="opt_all_categories">All Categories</option>
+                  <option value="Computer Science" data-translate="opt_cs">Computer Science</option>
+                  <option value="Mathematics" data-translate="opt_maths">Mathematics</option>
+                  <option value="Tamil Literature" data-translate="opt_tamil">Tamil Literature</option>
+                  <option value="Electronics" data-translate="opt_electronics">Electronics</option>
+                  <option value="Design" data-translate="opt_design">Design</option>
+                </select>
+
+                <select id="book-status-filter" onchange="filterBooks(); playAudioTone('click')">
+                  <option value="all" data-translate="opt_all_status">All Statuses</option>
+                  <option value="available" data-translate="opt_status_avail">Available</option>
+                  <option value="issued" data-translate="opt_status_issued">Issued</option>
+                </select>
+                
+                <!-- Bookmarks Quick Toggle -->
+                <button class="btn btn-secondary btn-sm" id="btn-show-bookmarks" onclick="toggleShowBookmarksFilter(); playAudioTone('click')">
+                  <i-lucide name="bookmark"></i-lucide>
+                  <span data-translate="btn_show_bookmarks">Bookmarks</span>
+                </button>
+              </div>
+
+              <!-- Admin Only Actions -->
+              <button class="btn btn-primary btn-gradient admin-only" onclick="showAddBookModal(); playAudioTone('click')">
+                <i-lucide name="plus"></i-lucide>
+                <span data-translate="btn_add_book">Add New Book</span>
+              </button>
+            </div>
+
+            <!-- Books Grid -->
+            <div class="books-grid" id="books-grid-container">
+              <!-- Cards rendered dynamically in app.js -->
+            </div>
+          </div>
+
+          <!-- 3. ISSUE & RETURN VIEW -->
+          <div id="borrow-view" class="portal-screen">
+            
+            <!-- ADMIN VIEWS (Issue Form & Approvals Queue) -->
+            <div class="admin-only">
+              <div class="borrow-modules-grid">
+                
+                <!-- Issue Book Module -->
+                <div class="dashboard-panel glass-panel issue-module">
+                  <div class="panel-title-container">
+                    <i-lucide name="book-open-check" class="icon-success"></i-lucide>
+                    <h2 data-translate="issue_book_title">Issue Book Transaction</h2>
+                  </div>
+                  <form id="issue-book-form" onsubmit="event.preventDefault(); handleIssueBook();">
+                    <div class="form-group">
+                      <label for="issue-student-select" data-translate="issue_label_student">Select Student</label>
+                      <select id="issue-student-select" required>
+                        <option value="" disabled selected data-translate="opt_select_student">Select a student user...</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="issue-book-select" data-translate="issue_label_book">Select Book</label>
+                      <select id="issue-book-select" onchange="updateExpectedReturnDate(); playAudioTone('click')" required>
+                        <option value="" disabled selected data-translate="opt_select_book">Select an available book...</option>
+                      </select>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col">
+                        <label for="issue-date" data-translate="issue_label_date">Issue Date</label>
+                        <input type="date" id="issue-date" onchange="updateExpectedReturnDate()" required>
+                      </div>
+                      <div class="form-group col">
+                        <label for="return-due-date" data-translate="issue_label_due">Due Date</label>
+                        <input type="date" id="return-due-date" required>
+                      </div>
+                    </div>
+
+                    <div class="form-notice">
+                      <i-lucide name="calendar-clock" class="notice-icon"></i-lucide>
+                      <p data-translate="issue_notice_msg">Borrowed books are assigned a standard return window of 14 days. Late returns accumulate a fine of ₹5/day.</p>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-block btn-gradient">
+                      <i-lucide name="check-circle2"></i-lucide>
+                      <span data-translate="issue_confirm_btn">Confirm Book Issuance</span>
+                    </button>
+                  </form>
+                </div>
+
+                <!-- Approvals / Requests Queue Module -->
+                <div class="dashboard-panel glass-panel approvals-queue-module">
+                  <div class="panel-title-container">
+                    <i-lucide name="clipboard-check" class="icon-warning"></i-lucide>
+                    <h2 data-translate="approvals_queue_title">Student Requests & Approvals Queue</h2>
+                  </div>
+                  <div class="table-container approvals-table-container">
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th data-translate="th_student">Student</th>
+                          <th data-translate="th_book">Requested Book</th>
+                          <th data-translate="th_request_date">Requested Date</th>
+                          <th data-translate="th_action">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="approvals-table-body">
+                        <!-- Pending requests lists populated dynamically -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+              
+              <!-- Returns / Active Loans listing -->
+              <div class="dashboard-panel glass-panel return-module" style="margin-top: 24px;">
+                <div class="panel-title-container">
+                  <i-lucide name="undo-2" class="icon-primary"></i-lucide>
+                  <h2 data-translate="active_loans_title">Active Borrow Records & Returns</h2>
+                </div>
+
+                <div class="action-bar-container compact">
+                  <div class="input-icon-wrapper search-box">
+                    <i-lucide name="search" class="input-icon"></i-lucide>
+                    <input type="text" id="loan-search-input" data-translate-placeholder="loan_search_placeholder" placeholder="Search loans by student or book name..." oninput="filterLoans()">
+                  </div>
+                </div>
+
+                <div class="table-container">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th data-translate="th_student">Student</th>
+                        <th data-translate="th_book">Book Taken</th>
+                        <th data-translate="th_borrow_date">Issued</th>
+                        <th data-translate="th_due_date">Due Date</th>
+                        <th data-translate="th_accumulated_fine">Fine (₹)</th>
+                        <th data-translate="th_action">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="loans-table-body">
+                      <!-- Active borrow transactions list populated dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- STUDENT PERSONAL LIBRARY VIEWS -->
+            <div class="student-only">
+              <div class="personal-library-wrapper">
+                
+                <div class="action-bar-container">
+                  <h2 data-translate="personal_library_title">My Library</h2>
+                  <button class="btn btn-secondary btn-sm" onclick="downloadBorrowingReceipt(); playAudioTone('click')">
+                    <i-lucide name="download"></i-lucide>
+                    <span data-translate="download_receipt_btn">Download Borrowing Receipt</span>
+                  </button>
+                </div>
+
+                <!-- My Library Summary KPIs -->
+                <div class="launcher-summary-grid">
+                  <div class="summary-card glass-panel">
+                    <div class="summary-title" data-translate="lbl_total_claimed">Total Claimed Books</div>
+                    <div class="summary-value" id="lbl-total-claimed-count">0</div>
+                  </div>
+                  <div class="summary-card glass-panel">
+                    <div class="summary-title" data-translate="lbl_active_borrowed">Active Borrowed Books</div>
+                    <div class="summary-value" id="lbl-active-borrowed-count">0</div>
+                  </div>
+                  <div class="summary-card glass-panel">
+                    <div class="summary-title" data-translate="lbl_returned_books">Returned Books</div>
+                    <div class="summary-value" id="lbl-returned-books-count">0</div>
+                  </div>
+                  <div class="summary-card glass-panel">
+                    <div class="summary-title" data-translate="lbl_favorite_books">Favorite Books</div>
+                    <div class="summary-value" id="lbl-favorite-books-count">0</div>
+                  </div>
+                </div>
+
+                <!-- Launcher Category Navigation Bar -->
+                <div class="launcher-nav-bar glass-panel">
+                  <button class="launcher-nav-btn active" id="btn-launcher-cat-reading" onclick="setLauncherCategory('reading', this); playAudioTone('click')">
+                    <i-lucide name="play" class="icon-sm"></i-lucide>
+                    <span data-translate="cat_reading">Currently Reading</span>
+                  </button>
+                  <button class="launcher-nav-btn" id="btn-launcher-cat-borrowed" onclick="setLauncherCategory('borrowed', this); playAudioTone('click')">
+                    <i-lucide name="bookmark" class="icon-sm"></i-lucide>
+                    <span data-translate="cat_borrowed">Borrowed Books</span>
+                  </button>
+                  <button class="launcher-nav-btn" id="btn-launcher-cat-returned" onclick="setLauncherCategory('returned', this); playAudioTone('click')">
+                    <i-lucide name="check-circle2" class="icon-sm"></i-lucide>
+                    <span data-translate="cat_returned">Returned Books</span>
+                  </button>
+                  <button class="launcher-nav-btn" id="btn-launcher-cat-pending" onclick="setLauncherCategory('pending', this); playAudioTone('click')">
+                    <i-lucide name="clock" class="icon-sm"></i-lucide>
+                    <span data-translate="cat_pending">Pending Return</span>
+                  </button>
+                  <button class="launcher-nav-btn" id="btn-launcher-cat-favorites" onclick="setLauncherCategory('favorites', this); playAudioTone('click')">
+                    <i-lucide name="star" class="icon-sm"></i-lucide>
+                    <span data-translate="cat_favorites">Favorites</span>
+                  </button>
+                  <button class="launcher-nav-btn" id="btn-launcher-cat-recent" onclick="setLauncherCategory('recent', this); playAudioTone('click')">
+                    <i-lucide name="history" class="icon-sm"></i-lucide>
+                    <span data-translate="cat_recent">Recently Claimed</span>
+                  </button>
+                </div>
+
+                <!-- Game Cards Grid -->
+                <div class="launcher-cards-grid" id="launcher-books-grid">
+                  <!-- Dynamic cards rendered in app.js -->
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 4. USER MANAGEMENT VIEW (Admin Only) -->
+          <div id="users-view" class="portal-screen admin-only">
+            <div class="action-bar-container">
+              <div class="search-filters-group">
+                <div class="input-icon-wrapper search-box">
+                  <i-lucide name="search" class="input-icon"></i-lucide>
+                  <input type="text" id="user-search-input" data-translate-placeholder="user_search_placeholder" placeholder="Search students by ID or Name..." oninput="filterUsers()">
+                </div>
+              </div>
+
+              <button class="btn btn-primary btn-gradient" onclick="showAddUserModal(); playAudioTone('click')">
+                <i-lucide name="user-plus"></i-lucide>
+                <span data-translate="btn_add_user">Add Student User</span>
+              </button>
+            </div>
+
+            <!-- Users Directory List -->
+            <div class="dashboard-panel glass-panel">
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th data-translate="th_user_id">Student ID</th>
+                      <th data-translate="th_user_name">Student Name</th>
+                      <th data-translate="th_current_borrowed">Current Borrowed Book</th>
+                      <th data-translate="th_borrow_history_count">Total Borrowings</th>
+                      <th data-translate="th_user_status">Borrow Status</th>
+                      <th data-translate="th_user_actions">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="users-table-body">
+                    <!-- Populated dynamically in app.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. SETTINGS VIEW -->
+          <div id="settings-view" class="portal-screen">
+            <div class="settings-grid">
+              
+              <!-- App Configuration Card -->
+              <div class="settings-card glass-panel">
+                <div class="card-header">
+                  <i-lucide name="sliders"></i-lucide>
+                  <h3 data-translate="app_settings_section">⚙ Settings</h3>
+                </div>
+                <div class="card-body">
+                  <div class="settings-option">
+                    <div class="option-label-desc">
+                      <strong data-translate="setting_theme">Color Mode</strong>
+                      <span data-translate="setting_theme_desc">Switch between light and dark display modes.</span>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="toggleTheme(); playAudioTone('click')">
+                      <span data-translate="theme_toggle_btn">Switch Theme</span>
+                    </button>
+                  </div>
+
+                  <!-- Dynamic Theme selection -->
+                  <div class="settings-option">
+                    <div class="option-label-desc">
+                      <strong data-translate="setting_color_palette">Theme Accent Color</strong>
+                      <span data-translate="setting_palette_desc">Select different color schemes for the library system.</span>
+                    </div>
+                    <select id="settings-theme-select" onchange="setThemeAccent(this.value); playAudioTone('click')">
+                      <option value="indigo" data-translate="opt_theme_indigo">Indigo (Violet)</option>
+                      <option value="emerald" data-translate="opt_theme_emerald">Emerald (Teal)</option>
+                      <option value="crimson" data-translate="opt_theme_crimson">Crimson (Ruby)</option>
+                      <option value="amber" data-translate="opt_theme_amber">Amber (Gold)</option>
+                      <option value="midnight" data-translate="opt_theme_midnight">Midnight (Cyan)</option>
+                      <option value="sunset" data-translate="opt_theme_sunset">Sunset (Orange/Pink)</option>
+                      <option value="ocean" data-translate="opt_theme_ocean">Ocean (Blue/Teal)</option>
+                      <option value="forest" data-translate="opt_theme_forest">Forest (Green/Earth)</option>
+                      <option value="berry" data-translate="opt_theme_berry">Berry (Purple/Pink)</option>
+                    </select>
+                  </div>
+
+                  <!-- Button Style selection -->
+                  <div class="settings-option">
+                    <div class="option-label-desc">
+                      <strong data-translate="setting_button_style">Button Design Style</strong>
+                      <span data-translate="setting_button_desc">Choose visual styling combinations for UI buttons.</span>
+                    </div>
+                    <select id="settings-button-select" onchange="setButtonCombination(this.value); playAudioTone('click')">
+                      <option value="glow" data-translate="opt_btn_glow">Glow Gradient</option>
+                      <option value="solid" data-translate="opt_btn_solid">Solid Neon</option>
+                      <option value="glass" data-translate="opt_btn_glass">Glass Outline</option>
+                      <option value="retro" data-translate="opt_btn_retro">Cyber Flat</option>
+                      <option value="neumorphic" data-translate="opt_btn_neumorphic">Neumorphic Soft 3D</option>
+                      <option value="pop" data-translate="opt_btn_pop">3D Pop Action</option>
+                      <option value="minimal" data-translate="opt_btn_minimal">Minimal Ghost</option>
+                    </select>
+                  </div>
+
+                  <!-- Font Size Selection -->
+                  <div class="settings-option">
+                    <div class="option-label-desc">
+                      <strong data-translate="setting_font_size">Display Font Size</strong>
+                      <span data-translate="setting_font_desc">Scale typography size across all library panels.</span>
+                    </div>
+                    <select id="settings-font-select" onchange="setFontSizeScale(this.value); playAudioTone('click')">
+                      <option value="font-sm" data-translate="opt_font_sm">Small</option>
+                      <option value="font-md" data-translate="opt_font_md">Medium</option>
+                      <option value="font-lg" data-translate="opt_font_lg">Large</option>
+                    </select>
+                  </div>
+
+                  <div class="settings-option">
+                    <div class="option-label-desc">
+                      <strong data-translate="setting_language">System Language</strong>
+                      <span data-translate="setting_lang_desc">Select between English and Tamil (தமிழ்).</span>
+                    </div>
+                    <select id="settings-language-select" onchange="setLanguage(this.value); playAudioTone('click')">
+                      <option value="en">English</option>
+                      <option value="ta">தமிழ் (Tamil)</option>
+                    </select>
+                  </div>
+
+                  <div class="settings-option">
+                    <div class="option-label-desc">
+                      <strong data-translate="setting_notifications">System Alerts & Notifications</strong>
+                      <span data-translate="setting_notify_desc">Receive notifications of library borrowings and logs.</span>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="settings-notifications-toggle" checked onchange="toggleNotificationsState(this.checked); playAudioTone('click')">
+                      <span class="slider-round"></span>
+                    </label>
+                  </div>
+
+                  <!-- Synthesized sounds toggle -->
+                  <div class="settings-option">
+                    <div class="option-label-desc">
+                      <strong data-translate="setting_sound">Synthesized App Sound</strong>
+                      <span data-translate="setting_sound_desc">Generate audio tone chimes during click operations.</span>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="settings-sound-toggle" checked onchange="toggleAppSound(this.checked); playAudioTone('click')">
+                      <span class="slider-round"></span>
+                    </label>
+                  </div>
+
+                  <div class="settings-option">
+                    <div class="option-label-desc">
+                      <strong data-translate="setting_auto_logout">Auto Logout Delay</strong>
+                      <span data-translate="setting_logout_desc">Log out user session after periods of inactivity.</span>
+                    </div>
+                    <select id="settings-auto-logout-select" onchange="updateAutoLogoutSetting(this.value); playAudioTone('click')">
+                      <option value="0" data-translate="opt_logout_never">Never</option>
+                      <option value="5">5 Minutes</option>
+                      <option value="10">10 Minutes</option>
+                      <option value="30">30 Minutes</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Security & Profile settings -->
+              <div class="settings-card glass-panel">
+                <div class="card-header">
+                  <i-lucide name="lock"></i-lucide>
+                  <h3 data-translate="security_section">Security & Profile</h3>
+                </div>
+                <div class="card-body">
+                  <!-- Profile Modification Form -->
+                  <form id="update-profile-form" onsubmit="event.preventDefault(); handleUpdateProfile();" style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border-color)">
+                    <h4 style="font-size: 0.95rem; margin-bottom: 12px;" data-translate="profile_details_header">Profile Information</h4>
+                    <div class="form-group">
+                      <label for="profile-form-name" data-translate="profile_label_name">Name</label>
+                      <input type="text" id="profile-form-name" required>
+                    </div>
+                    <button type="submit" class="btn btn-secondary btn-sm">
+                      <span data-translate="btn_save_profile">Save Profile Details</span>
+                    </button>
+                  </form>
+
+                  <form id="change-password-form" onsubmit="event.preventDefault(); handleChangePassword();">
+                    <h4 style="font-size: 0.95rem; margin-bottom: 12px;" data-translate="change_pass_header">Change Password</h4>
+                    <div class="form-group">
+                      <label for="change-old-password" data-translate="change_old_pass">Current Password</label>
+                      <input type="password" id="change-old-password" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="change-new-password" data-translate="change_new_pass">New Password</label>
+                      <input type="password" id="change-new-password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm btn-gradient">
+                      <span data-translate="btn_update_password">Update Password</span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Admin Only Settings Card -->
+              <div class="settings-card glass-panel admin-only col-span-2">
+                <div class="card-header">
+                  <i-lucide name="shield"></i-lucide>
+                  <h3 data-translate="admin_settings_section">🛡 Administrative Operations (Admin Only)</h3>
+                </div>
+                <div class="card-body admin-operations-panel">
+                  <div class="ops-column">
+                    <h4 data-translate="reports_header">Data Reports & Backup</h4>
+                    <p class="section-desc" data-translate="reports_desc">Compile status reports of current catalog inventory and students with outstanding returns.</p>
+                    
+                    <div class="btn-group">
+                      <button class="btn btn-primary btn-sm" onclick="generateReport('books'); playAudioTone('success')">
+                        <i-lucide name="file-text" class="icon-sm"></i-lucide>
+                        <span data-translate="report_books_btn">Generate Books Inventory Report</span>
+                      </button>
+                      <button class="btn btn-warning btn-sm" onclick="generateReport('defaulters'); playAudioTone('success')">
+                        <i-lucide name="users" class="icon-sm"></i-lucide>
+                        <span data-translate="report_defaulters_btn">Generate Defaulters Report</span>
+                      </button>
+                      <button class="btn btn-secondary btn-sm" onclick="triggerDatabaseBackup(); playAudioTone('success')">
+                        <i-lucide name="database" class="icon-sm"></i-lucide>
+                        <span data-translate="backup_db_btn">Backup Database (JSON)</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="ops-column">
+                    <h4 data-translate="activity_logs_header">Full System Logs</h4>
+                    <p class="section-desc" data-translate="activity_logs_desc">Audit log trace records representing administrator and borrowing activities.</p>
+                    <div class="log-terminal" id="settings-activity-logs">
+                      <!-- Activity logs rendered as text trace lines -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+  </div>
+
+  <!-- ==================== MODALS & POPUPS ==================== -->
+
+  <!-- BOOK DETAILS MODAL -->
+  <div class="modal-overlay" id="book-details-modal">
+    <div class="modal-card glass-panel width-md">
+      <div class="modal-header">
+        <h3 id="details-book-name">Book Details</h3>
+        <button class="btn-icon" onclick="closeModal('book-details-modal'); playAudioTone('click')">
+          <i-lucide name="x"></i-lucide>
+        </button>
+      </div>
+      <div class="modal-body book-details-modal-layout">
+        <div class="book-cover-3d-wrapper">
+          <div class="book-cover-3d" id="details-book-cover">
+            <div class="cover-inner" id="details-cover-inner">
+              <span class="cover-title" id="details-cover-title">Python Basics</span>
+              <span class="cover-author" id="details-cover-author">Author</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="book-info-list">
+          <div class="info-row">
+            <span class="label" data-translate="info_book_id">Book ID:</span>
+            <strong id="details-book-id" class="code-font">B001</strong>
+          </div>
+          <div class="info-row">
+            <span class="label" data-translate="info_author">Author Name:</span>
+            <strong id="details-book-author">Author</strong>
+          </div>
+          <div class="info-row">
+            <span class="label" data-translate="info_category">Category:</span>
+            <strong id="details-book-category">Science</strong>
+          </div>
+          <div class="info-row">
+            <span class="label" data-translate="info_isbn">ISBN Number:</span>
+            <strong id="details-book-isbn" class="code-font">978-3-16-148410-0</strong>
+          </div>
+          <div class="info-row">
+            <span class="label" data-translate="info_pub_date">Publication Date:</span>
+            <strong id="details-book-pubdate">2020-05-15</strong>
+          </div>
+          <div class="info-row">
+            <span class="label" data-translate="info_shelf">Shelf Location:</span>
+            <strong id="details-book-shelf" class="location-badge">Shelf A-3</strong>
+          </div>
+          <div class="info-row">
+            <span class="label" data-translate="info_quantity">Quantity:</span>
+            <strong id="details-book-qty">5 Available</strong>
+          </div>
+          <div class="info-row">
+            <span class="label" data-translate="info_status">Status:</span>
+            <span class="badge" id="details-book-status-badge">Available</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-glass-info btn-sm" id="details-bookmark-btn" style="display:none;" title="Bookmark this book">
+          <i-lucide name="bookmark" style="width:16px;height:16px;"></i-lucide>
+          <span>Bookmark</span>
+        </button>
+        <button class="btn btn-glass-success" id="details-borrow-action-btn" onclick="triggerBorrowFromDetails(); playAudioTone('click')" data-translate="btn_borrow_this">Borrow This Book</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT BOOK MODAL -->
+  <div class="modal-overlay" id="book-form-modal">
+    <div class="modal-card glass-panel width-md">
+      <div class="modal-header">
+        <h3 id="book-modal-title" data-translate="add_book_modal_title">Add New Book</h3>
+        <button class="btn-icon" onclick="closeModal('book-form-modal'); playAudioTone('click')">
+          <i-lucide name="x"></i-lucide>
+        </button>
+      </div>
+      <form id="book-edit-form" onsubmit="event.preventDefault(); saveBookForm();">
+        <div class="modal-body">
+          <input type="hidden" id="book-form-action" value="create">
+          
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="book-form-id" data-translate="book_form_id">Book ID</label>
+              <input type="text" id="book-form-id" placeholder="e.g. B026" required class="code-font">
+            </div>
+            <div class="form-group col">
+              <label for="book-form-name" data-translate="book_form_name">Book Name</label>
+              <input type="text" id="book-form-name" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="book-form-author" data-translate="book_form_author">Author Name</label>
+              <input type="text" id="book-form-author" required>
+            </div>
+            <div class="form-group col">
+              <label for="book-form-category" data-translate="book_form_category">Category</label>
+              <select id="book-form-category" required>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Tamil Literature">Tamil Literature</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Design">Design</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="book-form-isbn" data-translate="book_form_isbn">ISBN Number</label>
+              <input type="text" id="book-form-isbn" placeholder="978-3-16-148410-0" required>
+            </div>
+            <div class="form-group col">
+              <label for="book-form-pubdate" data-translate="book_form_pubdate">Publication Date</label>
+              <input type="date" id="book-form-pubdate" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="book-form-qty" data-translate="book_form_qty">Quantity</label>
+              <input type="number" id="book-form-qty" min="1" max="100" required>
+            </div>
+            <div class="form-group col">
+              <label for="book-form-shelf" data-translate="book_form_shelf">Shelf Location</label>
+              <input type="text" id="book-form-shelf" placeholder="e.g. Shelf C-4" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-gradient" data-translate="btn_save">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT USER MODAL -->
+  <div class="modal-overlay" id="user-form-modal">
+    <div class="modal-card glass-panel width-sm">
+      <div class="modal-header">
+        <h3 id="user-modal-title" data-translate="add_user_modal_title">Add Student User</h3>
+        <button class="btn-icon" onclick="closeModal('user-form-modal'); playAudioTone('click')">
+          <i-lucide name="x"></i-lucide>
+        </button>
+      </div>
+      <form id="user-edit-form" onsubmit="event.preventDefault(); saveUserForm();">
+        <div class="modal-body">
+          <input type="hidden" id="user-form-action" value="create">
+          
+          <div class="form-group">
+            <label for="user-form-id" data-translate="user_form_id">Student ID</label>
+            <input type="text" id="user-form-id" placeholder="e.g. ST011" required class="code-font">
+          </div>
+
+          <div class="form-group">
+            <label for="user-form-name" data-translate="user_form_name">Student Name</label>
+            <input type="text" id="user-form-name" required>
+          </div>
+          
+          <div class="form-group password-field-wrapper">
+            <label for="user-form-password" data-translate="user_form_password">Password</label>
+            <div class="input-icon-wrapper">
+              <input type="password" id="user-form-password" placeholder="••••••••" required>
+              <button type="button" class="btn-icon password-toggle" onclick="togglePasswordVisibility('user-form-password', this); playAudioTone('click')">
+                <i-lucide name="eye-off" class="toggle-eye-icon"></i-lucide>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-gradient" data-translate="btn_save">Save User</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- VIEW USER HISTORY MODAL -->
+  <div class="modal-overlay" id="user-history-modal">
+    <div class="modal-card glass-panel width-md">
+      <div class="modal-header">
+        <h3><span id="history-student-name">Student</span> - <span data-translate="history_modal_title">Borrow History</span></h3>
+        <button class="btn-icon" onclick="closeModal('user-history-modal'); playAudioTone('click')">
+          <i-lucide name="x"></i-lucide>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th data-translate="th_book">Book Borrowed</th>
+                <th data-translate="th_borrow_date">Borrow Date</th>
+                <th data-translate="th_return_date">Return Date</th>
+                <th data-translate="th_status">Status</th>
+                <th data-translate="th_accumulated_fine">Fine (₹)</th>
+              </tr>
+            </thead>
+            <tbody id="user-history-table-body">
+              <!-- Render history records dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONFIRMATION MODALS (LOGOUT & GENERAL) -->
+  <div class="modal-overlay" id="confirm-modal">
+    <div class="modal-card glass-panel width-xs">
+      <div class="modal-header">
+        <h3 id="confirm-modal-title" data-translate="confirm_modal_title">Are you sure?</h3>
+        <button class="btn-icon" onclick="closeModal('confirm-modal'); playAudioTone('click')">
+          <i-lucide name="x"></i-lucide>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-modal-text" data-translate="confirm_modal_text">Are you sure you want to perform this action?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="confirm-modal-btn-confirm" data-translate="btn_yes">Yes, Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- READING SIMULATOR MODAL -->
+  <div class="modal-overlay" id="reading-simulator-modal">
+    <div class="modal-card glass-panel width-sm">
+      <div class="modal-header">
+        <h3>📖 <span id="simulator-book-title" data-translate="lbl_reading_sim">Reading Simulator</span></h3>
+        <button class="btn-icon" onclick="closeReadingSimulator(); playAudioTone('click')">
+          <i-lucide name="x"></i-lucide>
+        </button>
+      </div>
+      <div class="modal-body simulator-modal-layout" style="text-align: center; padding: 30px;">
+        <div class="simulator-book-logo-large" id="simulator-book-logo" style="margin-bottom: 20px;">
+          <!-- Dynamically set logo icon -->
+        </div>
+        <h2 style="font-size: 1.5rem; margin: 15px 0 5px 0;" id="simulator-book-name">Book Title</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 0.9rem;" id="simulator-book-author">Author Name</p>
+        
+        <div class="reading-progress-container" style="background-color: var(--border-color); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 15px;">
+          <div class="reading-progress-bar" id="simulator-progress-bar" style="background: var(--accent-gradient); width: 0%; height: 100%; transition: width 0.1s linear;"></div>
+        </div>
+        
+        <p style="font-size: 0.85rem; color: var(--text-muted);" id="simulator-progress-text" data-translate="lbl_simulating_progress">Simulating reading progress...</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION UTILITY -->
+  <div id="toast-container"></div>
+
+  <!-- Core JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>
